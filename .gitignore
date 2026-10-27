@@ -1,4 +1,11 @@
-bin/
+# Arquivos compilados do Java
 *.class
-.settings/
+# Pastas de IDEs
+.vscode/
+.idea/
+*.iml
 .metadata/
+.settings/
+# Pastas de build
+bin/
+target/

@@ -6,7 +6,6 @@ public class SistemaPrincipal {
 
     public static void main(String[] args) {
 
-        // Mesmo molde, dois objetos com estados diferentes
         Garrafa minhaGarrafa = new Garrafa();
         minhaGarrafa.marca = "Stanley";
         minhaGarrafa.material = "Aço inox";
@@ -21,12 +20,23 @@ public class SistemaPrincipal {
         garrafaDoProfessor.volumeAtualMl = 500;
         garrafaDoProfessor.tampada = false;
 
-        System.out.println("--- Garrafas ---");
-        System.out.println("Minha garrafa: " + minhaGarrafa.marca + " | " + minhaGarrafa.material
-                + " | " + minhaGarrafa.volumeAtualMl + "/" + minhaGarrafa.capacidadeMl + " ml"
-                + " | Tampada: " + minhaGarrafa.tampada);
-        System.out.println("Garrafa do professor: " + garrafaDoProfessor.marca + " | " + garrafaDoProfessor.material
-                + " | " + garrafaDoProfessor.volumeAtualMl + "/" + garrafaDoProfessor.capacidadeMl + " ml"
-                + " | Tampada: " + garrafaDoProfessor.tampada);
+        System.out.println("--- Testando a garrafa Stanley ---");
+        minhaGarrafa.beber(200);      // Inválido: tampada
+        minhaGarrafa.abrirTampa();
+        minhaGarrafa.beber(200);      // Válido
+        minhaGarrafa.beber(-50);      // Inválido: negativo
+        minhaGarrafa.beber(5000);     // Inválido: mais do que tem
+        minhaGarrafa.encher(100);     // Válido
+        minhaGarrafa.encher(1000);    // Inválido: transbordaria
+        System.out.println("Espaço livre: " + minhaGarrafa.calcularEspacoLivreMl() + " ml");
+        minhaGarrafa.fecharTampa();
+        minhaGarrafa.fecharTampa();   // Inválido: já fechada
+
+        System.out.println("\n--- Testando a garrafa Crystal ---");
+        // Usando o retorno dos métodos
+        boolean encheu = garrafaDoProfessor.encher(300);
+        System.out.println("Conseguiu encher? " + encheu);
+        boolean bebeu = garrafaDoProfessor.beber(300);
+        System.out.println("Conseguiu beber? " + bebeu);
     }
 }
