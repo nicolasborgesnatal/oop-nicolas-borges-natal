@@ -6,38 +6,30 @@ public class SistemaPrincipal {
 
     public static void main(String[] args) {
 
-        System.out.println("--- Configurando a garrafa ---");
-        Garrafa minhaGarrafa = new Garrafa();
-        minhaGarrafa.setMarca("Stanley");
-        minhaGarrafa.setMaterial("Aço inox");
-        minhaGarrafa.setCapacidadeMl(1000);
-        System.out.println("Garrafa configurada: " + minhaGarrafa.getMarca() + " | "
-                + minhaGarrafa.getMaterial() + " | " + minhaGarrafa.getCapacidadeMl() + " ml");
+        System.out.println("--- Construtor customizado ---");
+        Garrafa minhaGarrafa = new Garrafa("Stanley", "Aço inox", 1000);
 
-        System.out.println("\n--- Tentando burlar os setters ---");
-        minhaGarrafa.setMarca("");            // Inválido: vazio
-        minhaGarrafa.setCapacidadeMl(-100);   // Inválido: negativo
-        minhaGarrafa.setCapacidadeMl(5000);   // Inválido: acima de 3000
-        System.out.println("Depois das tentativas: " + minhaGarrafa.getMarca() + " | "
-                + minhaGarrafa.getCapacidadeMl() + " ml");
+        System.out.println("\n--- Construtor padrão (encadeado com this()) ---");
+        Garrafa garrafaPadrao = new Garrafa();
 
-        System.out.println("\n--- Usando a garrafa ---");
+        System.out.println("\n--- Usando a garrafa Stanley ---");
         minhaGarrafa.encher(750);
-        minhaGarrafa.fecharTampa();
-        minhaGarrafa.beber(200);              // Inválido: tampada
-        minhaGarrafa.abrirTampa();
         minhaGarrafa.beber(200);
-        minhaGarrafa.setCapacidadeMl(300);    // Inválido: menor que o volume
 
-        System.out.println("\n--- Estado final (lido pelos getters) ---");
-        System.out.println("Marca: " + minhaGarrafa.getMarca());
-        System.out.println("Material: " + minhaGarrafa.getMaterial());
-        System.out.println("Capacidade: " + minhaGarrafa.getCapacidadeMl() + " ml");
-        System.out.println("Volume atual: " + minhaGarrafa.getVolumeAtualMl() + " ml");
-        System.out.println("Tampada: " + minhaGarrafa.isTampada());
-        System.out.println("Espaço livre: " + minhaGarrafa.calcularEspacoLivreMl() + " ml");
+        System.out.println("\n--- Usando a garrafa padrão ---");
+        garrafaPadrao.encher(600);   // Inválido: transbordaria
+        garrafaPadrao.encher(500);
 
-        // Tentativa de hack: descomente e veja o erro de compilação
-        // minhaGarrafa.volumeAtualMl = 999999;
+        System.out.println("\n--- Estado final ---");
+        System.out.println(minhaGarrafa.getMarca() + " | " + minhaGarrafa.getMaterial() + " | "
+                + minhaGarrafa.getVolumeAtualMl() + "/" + minhaGarrafa.getCapacidadeMl() + " ml"
+                + " | Tampada: " + minhaGarrafa.isTampada());
+        System.out.println(garrafaPadrao.getMarca() + " | " + garrafaPadrao.getMaterial() + " | "
+                + garrafaPadrao.getVolumeAtualMl() + "/" + garrafaPadrao.getCapacidadeMl() + " ml"
+                + " | Tampada: " + garrafaPadrao.isTampada());
+
+        // Tentativas bloqueadas: descomente e veja o erro de compilação
+        // minhaGarrafa.setMarca("Outra marca");   // Marca não muda depois de fabricada
+        // minhaGarrafa.setCapacidadeMl(2000);     // Capacidade também não
     }
 }

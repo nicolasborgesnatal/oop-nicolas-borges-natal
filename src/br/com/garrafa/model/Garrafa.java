@@ -9,6 +9,22 @@ public class Garrafa {
     private double volumeAtualMl;
     private boolean tampada;
 
+    // Construtor padrão: reaproveita o customizado com valores genéricos
+    public Garrafa() {
+        this("Genérica", "Plástico PET", 500);
+    }
+
+    // Construtor customizado: dados essenciais obrigatórios no nascimento
+    public Garrafa(String marca, String material, double capacidadeMl) {
+        this.setMarca(marca);
+        this.setMaterial(material);
+        this.setCapacidadeMl(capacidadeMl);
+        // Estado inicial: vazia e aberta
+        this.volumeAtualMl = 0;
+        this.tampada = false;
+        System.out.println("Garrafa criada: " + this.marca + " | " + this.material + " | " + this.capacidadeMl + " ml");
+    }
+
     public boolean encher(double quantidadeMl) {
         // Só aceita quantidade positiva
         if (quantidadeMl <= 0) {
@@ -79,8 +95,8 @@ public class Garrafa {
         return this.marca;
     }
 
-    public void setMarca(String marca) {
-        // Marca é obrigatória
+    // Privado: marca não muda depois de fabricada
+    private void setMarca(String marca) {
         if (marca == null || marca.isBlank()) {
             System.out.println("Erro: a marca não pode ser vazia.");
             return;
@@ -92,8 +108,8 @@ public class Garrafa {
         return this.material;
     }
 
-    public void setMaterial(String material) {
-        // Material é obrigatório
+    // Privado: material não muda depois de fabricada
+    private void setMaterial(String material) {
         if (material == null || material.isBlank()) {
             System.out.println("Erro: o material não pode ser vazio.");
             return;
@@ -105,15 +121,10 @@ public class Garrafa {
         return this.capacidadeMl;
     }
 
-    public void setCapacidadeMl(double capacidadeMl) {
-        // Faixa realista para uma garrafa
+    // Privado: capacidade não muda depois de fabricada
+    private void setCapacidadeMl(double capacidadeMl) {
         if (capacidadeMl <= 0 || capacidadeMl > 3000) {
             System.out.println("Erro: a capacidade deve ser maior que 0 e no máximo 3000 ml.");
-            return;
-        }
-        // Não pode encolher abaixo do que já tem dentro
-        if (capacidadeMl < this.volumeAtualMl) {
-            System.out.println("Erro: a capacidade não pode ser menor que o volume atual (" + this.volumeAtualMl + " ml).");
             return;
         }
         this.capacidadeMl = capacidadeMl;
