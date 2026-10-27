@@ -2,12 +2,12 @@ package br.com.garrafa.model;
 
 public class Garrafa {
 
-    // Públicos por enquanto
-    public String marca;
-    public String material;
-    public double capacidadeMl;
-    public double volumeAtualMl;
-    public boolean tampada;
+    // Atributos fechados: só a própria classe altera
+    private String marca;
+    private String material;
+    private double capacidadeMl;
+    private double volumeAtualMl;
+    private boolean tampada;
 
     public boolean encher(double quantidadeMl) {
         // Só aceita quantidade positiva
@@ -25,7 +25,7 @@ public class Garrafa {
             System.out.println("Erro: a garrafa transbordaria. Espaço livre: " + calcularEspacoLivreMl() + " ml.");
             return false;
         }
-        this.volumeAtualMl += quantidadeMl;
+        setVolumeAtualMl(this.volumeAtualMl + quantidadeMl);
         System.out.println("Garrafa enchida com " + quantidadeMl + " ml. Volume atual: " + this.volumeAtualMl + " ml.");
         return true;
     }
@@ -46,7 +46,7 @@ public class Garrafa {
             System.out.println("Erro: só há " + this.volumeAtualMl + " ml na garrafa.");
             return false;
         }
-        this.volumeAtualMl -= quantidadeMl;
+        setVolumeAtualMl(this.volumeAtualMl - quantidadeMl);
         System.out.println("Você bebeu " + quantidadeMl + " ml. Volume atual: " + this.volumeAtualMl + " ml.");
         return true;
     }
@@ -73,5 +73,67 @@ public class Garrafa {
 
     public double calcularEspacoLivreMl() {
         return this.capacidadeMl - this.volumeAtualMl;
+    }
+
+    public String getMarca() {
+        return this.marca;
+    }
+
+    public void setMarca(String marca) {
+        // Marca é obrigatória
+        if (marca == null || marca.isBlank()) {
+            System.out.println("Erro: a marca não pode ser vazia.");
+            return;
+        }
+        this.marca = marca;
+    }
+
+    public String getMaterial() {
+        return this.material;
+    }
+
+    public void setMaterial(String material) {
+        // Material é obrigatório
+        if (material == null || material.isBlank()) {
+            System.out.println("Erro: o material não pode ser vazio.");
+            return;
+        }
+        this.material = material;
+    }
+
+    public double getCapacidadeMl() {
+        return this.capacidadeMl;
+    }
+
+    public void setCapacidadeMl(double capacidadeMl) {
+        // Faixa realista para uma garrafa
+        if (capacidadeMl <= 0 || capacidadeMl > 3000) {
+            System.out.println("Erro: a capacidade deve ser maior que 0 e no máximo 3000 ml.");
+            return;
+        }
+        // Não pode encolher abaixo do que já tem dentro
+        if (capacidadeMl < this.volumeAtualMl) {
+            System.out.println("Erro: a capacidade não pode ser menor que o volume atual (" + this.volumeAtualMl + " ml).");
+            return;
+        }
+        this.capacidadeMl = capacidadeMl;
+    }
+
+    public double getVolumeAtualMl() {
+        return this.volumeAtualMl;
+    }
+
+    // Privado: volume só muda via encher() e beber()
+    private void setVolumeAtualMl(double volumeAtualMl) {
+        if (volumeAtualMl < 0 || volumeAtualMl > this.capacidadeMl) {
+            System.out.println("Erro de segurança: volume inválido bloqueado.");
+            return;
+        }
+        this.volumeAtualMl = volumeAtualMl;
+    }
+
+    // Getter de boolean usa "is" por convenção
+    public boolean isTampada() {
+        return this.tampada;
     }
 }
