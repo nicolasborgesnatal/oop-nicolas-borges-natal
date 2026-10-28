@@ -1,7 +1,7 @@
 package br.com.garrafa.model;
 
-// Garrafa PET É UMA Garrafa
-public class GarrafaPet extends Garrafa {
+// Garrafa PET É UMA Garrafa e TAMBÉM é Reciclavel
+public class GarrafaPet extends Garrafa implements Reciclavel {
 
     // Exclusivo: só a PET tem percentual de plástico reciclado
     private int percentualReciclado;
@@ -23,14 +23,27 @@ public class GarrafaPet extends Garrafa {
         return "Conservação: cerca de 1 hora (PET não tem isolamento térmico).";
     }
 
+    // Contrato da interface: plástico vai no coletor vermelho
+    @Override
+    public String descartarCorretamente() {
+        return "Garrafa " + this.getMarca() + ": descarte no coletor vermelho (plástico). Esvazie antes.";
+    }
+
+    // Contrato da interface: selo depende do plástico reciclado
+    @Override
+    public boolean possuiSeloVerde() {
+        return this.percentualReciclado >= Reciclavel.PERCENTUAL_SELO_VERDE;
+    }
+
     public int getPercentualReciclado() {
         return this.percentualReciclado;
     }
 
     // Privado: composição do plástico não muda depois de fabricada
     private void setPercentualReciclado(int percentualReciclado) {
-        if (percentualReciclado < 0 || percentualReciclado > 100) {
-            System.out.println("Erro: o percentual reciclado deve estar entre 0 e 100.");
+        if (percentualReciclado < Reciclavel.PERCENTUAL_MINIMO || percentualReciclado > Reciclavel.PERCENTUAL_MAXIMO) {
+            System.out.println("Erro: o percentual reciclado deve estar entre "
+                    + Reciclavel.PERCENTUAL_MINIMO + " e " + Reciclavel.PERCENTUAL_MAXIMO + ".");
             return;
         }
         this.percentualReciclado = percentualReciclado;
