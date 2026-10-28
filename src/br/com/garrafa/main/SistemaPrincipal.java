@@ -1,39 +1,35 @@
 package br.com.garrafa.main;
 
-import br.com.garrafa.model.Garrafa;
+import br.com.garrafa.model.GarrafaPet;
+import br.com.garrafa.model.GarrafaTermica;
 import br.com.garrafa.model.Tampa;
 
 public class SistemaPrincipal {
 
     public static void main(String[] args) {
 
-        System.out.println("--- Criando as tampas ---");
-        Tampa tampaRosca = new Tampa("Rosca", "Preta");
-        Tampa tampaBico = new Tampa("Bico", "Azul");
+        System.out.println("--- Criando as filhas (super() chama a mãe primeiro) ---");
+        GarrafaTermica stanley = new GarrafaTermica("Stanley", 1000, new Tampa("Rosca", "Preta"), 2);
+        GarrafaPet crystal = new GarrafaPet("Crystal", 500, new Tampa("Rosca", "Azul"), 30);
 
-        System.out.println("\n--- Criando as garrafas (associação) ---");
-        Garrafa minhaGarrafa = new Garrafa("Stanley", "Aço inox", 1000, tampaRosca);
-        Garrafa garrafaPadrao = new Garrafa();
+        System.out.println("\n--- Métodos herdados da mãe ---");
+        // Nenhum desses métodos foi escrito nas filhas
+        stanley.abrirTampa();
+        stanley.encher(800);
+        stanley.beber(250);
+        crystal.abrirTampa();
+        crystal.encher(500);
 
-        System.out.println("\n--- Usando a garrafa Stanley ---");
-        minhaGarrafa.encher(750);      // Inválido: tampa nasce fechada
-        minhaGarrafa.abrirTampa();
-        minhaGarrafa.encher(750);
-        minhaGarrafa.beber(200);
+        System.out.println("\n--- Dados herdados + exclusivos ---");
+        System.out.println("Térmica: " + stanley.getMarca() + " | " + stanley.getMaterial() + " | "
+                + stanley.getVolumeAtualMl() + "/" + stanley.getCapacidadeMl() + " ml"
+                + " | Camadas de isolamento: " + stanley.getCamadasIsolamento());
+        System.out.println("PET: " + crystal.getMarca() + " | " + crystal.getMaterial() + " | "
+                + crystal.getVolumeAtualMl() + "/" + crystal.getCapacidadeMl() + " ml"
+                + " | Reciclado: " + crystal.getPercentualReciclado() + "%");
 
-        System.out.println("\n--- Navegando pelo objeto associado ---");
-        System.out.println("Tampa da Stanley: " + minhaGarrafa.getTampaAcoplada().getTipo() + " ("
-                + minhaGarrafa.getTampaAcoplada().getCor() + ") | Aberta: " + minhaGarrafa.getTampaAcoplada().isAberta());
-        System.out.println("Tampa da padrão: " + garrafaPadrao.getTampaAcoplada().getTipo() + " ("
-                + garrafaPadrao.getTampaAcoplada().getCor() + ") | Aberta: " + garrafaPadrao.getTampaAcoplada().isAberta());
-
-        System.out.println("\n--- Passagem por referência ---");
-        // Mexendo na tampa por fora da garrafa
-        tampaRosca.fechar();
-        System.out.println("A Stanley percebeu? Tampada: " + minhaGarrafa.isTampada());
-
-        System.out.println("\n--- Trocando a tampa ---");
-        minhaGarrafa.trocarTampa(null);       // Inválido
-        minhaGarrafa.trocarTampa(tampaBico);
+        System.out.println("\n--- Validação na filha ---");
+        GarrafaTermica termicaInvalida = new GarrafaTermica("Genérica", 500, new Tampa("Bico", "Branca"), 5);
+        System.out.println("Camadas registradas: " + termicaInvalida.getCamadasIsolamento());
     }
 }
