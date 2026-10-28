@@ -2,27 +2,29 @@ package br.com.garrafa.model;
 
 public class Garrafa {
 
-    // Atributos fechados: só a própria classe altera
     private String marca;
     private String material;
     private double capacidadeMl;
     private double volumeAtualMl;
-    private boolean tampada;
+
+    // Associação: a Garrafa TEM-UMA Tampa
+    private Tampa tampaAcoplada;
 
     // Construtor padrão: reaproveita o customizado com valores genéricos
     public Garrafa() {
-        this("Genérica", "Plástico PET", 500);
+        this("Genérica", "Plástico PET", 500, new Tampa("Rosca", "Branca"));
     }
 
     // Construtor customizado: dados essenciais obrigatórios no nascimento
-    public Garrafa(String marca, String material, double capacidadeMl) {
+    public Garrafa(String marca, String material, double capacidadeMl, Tampa tampaAcoplada) {
         this.setMarca(marca);
         this.setMaterial(material);
         this.setCapacidadeMl(capacidadeMl);
-        // Estado inicial: vazia e aberta
+        this.setTampaAcoplada(tampaAcoplada);
+        // Estado inicial: vazia
         this.volumeAtualMl = 0;
-        this.tampada = false;
-        System.out.println("Garrafa criada: " + this.marca + " | " + this.material + " | " + this.capacidadeMl + " ml");
+        System.out.println("Garrafa criada: " + this.marca + " | " + this.material + " | " + this.capacidadeMl
+                + " ml | Tampa: " + this.tampaAcoplada.getTipo() + " (" + this.tampaAcoplada.getCor() + ")");
     }
 
     public boolean encher(double quantidadeMl) {
@@ -32,7 +34,7 @@ public class Garrafa {
             return false;
         }
         // Garrafa fechada não recebe líquido
-        if (this.tampada) {
+        if (this.isTampada()) {
             System.out.println("Erro: abra a tampa antes de encher.");
             return false;
         }
@@ -53,7 +55,7 @@ public class Garrafa {
             return false;
         }
         // Garrafa fechada não libera líquido
-        if (this.tampada) {
+        if (this.isTampada()) {
             System.out.println("Erro: abra a tampa antes de beber.");
             return false;
         }
@@ -67,24 +69,22 @@ public class Garrafa {
         return true;
     }
 
+    // Repassa o comando para o objeto associado
     public void abrirTampa() {
-        // Evita abrir o que já está aberto
-        if (!this.tampada) {
-            System.out.println("Aviso: a tampa já está aberta.");
-            return;
-        }
-        this.tampada = false;
-        System.out.println("Tampa aberta.");
+        this.tampaAcoplada.abrir();
     }
 
+    // Repassa o comando para o objeto associado
     public void fecharTampa() {
-        // Evita fechar o que já está fechado
-        if (this.tampada) {
-            System.out.println("Aviso: a tampa já está fechada.");
-            return;
+        this.tampaAcoplada.fechar();
+    }
+
+    // Ação real: tampa perdida ou quebrada é substituída
+    public void trocarTampa(Tampa novaTampa) {
+        this.setTampaAcoplada(novaTampa);
+        if (this.tampaAcoplada == novaTampa) {
+            System.out.println("Tampa trocada: agora é " + novaTampa.getTipo() + " (" + novaTampa.getCor() + ").");
         }
-        this.tampada = true;
-        System.out.println("Tampa fechada.");
     }
 
     public double calcularEspacoLivreMl() {
@@ -143,8 +143,21 @@ public class Garrafa {
         this.volumeAtualMl = volumeAtualMl;
     }
 
-    // Getter de boolean usa "is" por convenção
+    public Tampa getTampaAcoplada() {
+        return this.tampaAcoplada;
+    }
+
+    // Privado: troca só pelo processo trocarTampa()
+    private void setTampaAcoplada(Tampa tampaAcoplada) {
+        if (tampaAcoplada == null) {
+            System.out.println("Erro: a garrafa precisa de uma tampa válida.");
+            return;
+        }
+        this.tampaAcoplada = tampaAcoplada;
+    }
+
+    // Quem sabe se está fechada é a própria tampa
     public boolean isTampada() {
-        return this.tampada;
+        return !this.tampaAcoplada.isAberta();
     }
 }
