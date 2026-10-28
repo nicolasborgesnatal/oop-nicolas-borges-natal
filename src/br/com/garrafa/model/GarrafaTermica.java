@@ -12,6 +12,13 @@ public class GarrafaTermica extends Garrafa {
         this.setCamadasIsolamento(camadasIsolamento);
     }
 
+    // Cada camada segura 6 horas de temperatura
+    @Override
+    public String calcularTempoConservacao() {
+        int horas = this.camadasIsolamento * 6;
+        return "Conservação: " + horas + " horas (" + this.camadasIsolamento + " camada(s) de isolamento).";
+    }
+
     public int getCamadasIsolamento() {
         return this.camadasIsolamento;
     }

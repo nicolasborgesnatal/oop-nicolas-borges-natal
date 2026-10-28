@@ -12,6 +12,12 @@ public class GarrafaPet extends Garrafa {
         this.setPercentualReciclado(percentualReciclado);
     }
 
+    // PET não isola: o líquido perde temperatura rápido
+    @Override
+    public String calcularTempoConservacao() {
+        return "Conservação: cerca de 1 hora (PET não tem isolamento térmico).";
+    }
+
     public int getPercentualReciclado() {
         return this.percentualReciclado;
     }

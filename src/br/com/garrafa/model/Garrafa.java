@@ -90,6 +90,11 @@ public class Garrafa {
     public double calcularEspacoLivreMl() {
         return this.capacidadeMl - this.volumeAtualMl;
     }
+    
+    // Contrato na base da hierarquia; cada filha sobrescreve
+    public String calcularTempoConservacao() {
+        return "Conservação não definida para uma garrafa genérica.";
+    }
 
     public String getMarca() {
         return this.marca;
