@@ -1,6 +1,7 @@
 package br.com.garrafa.model;
 
-public class Garrafa {
+// Abstrata: não existe garrafa "genérica", só tipos concretos
+public abstract class Garrafa {
 
     private String marca;
     private String material;
@@ -10,13 +11,8 @@ public class Garrafa {
     // Associação: a Garrafa TEM-UMA Tampa
     private Tampa tampaAcoplada;
 
-    // Construtor padrão: reaproveita o customizado com valores genéricos
-    public Garrafa() {
-        this("Genérica", "Plástico PET", 500, new Tampa("Rosca", "Branca"));
-    }
-
-    // Construtor customizado: dados essenciais obrigatórios no nascimento
-    public Garrafa(String marca, String material, double capacidadeMl, Tampa tampaAcoplada) {
+    // Protegido: só as filhas chamam, via super()
+    protected Garrafa(String marca, String material, double capacidadeMl, Tampa tampaAcoplada) {
         this.setMarca(marca);
         this.setMaterial(material);
         this.setCapacidadeMl(capacidadeMl);
@@ -90,11 +86,9 @@ public class Garrafa {
     public double calcularEspacoLivreMl() {
         return this.capacidadeMl - this.volumeAtualMl;
     }
-    
-    // Contrato na base da hierarquia; cada filha sobrescreve
-    public String calcularTempoConservacao() {
-        return "Conservação não definida para uma garrafa genérica.";
-    }
+
+    // Abstrato: cada tipo de garrafa conserva de um jeito, a filha é obrigada a dizer como
+    public abstract String calcularTempoConservacao();
 
     public String getMarca() {
         return this.marca;
